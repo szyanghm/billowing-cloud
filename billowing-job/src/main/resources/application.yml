@@ -29,8 +29,8 @@
 #        msgDataFormat: JSON
 #
 ##腾讯云COS 配置信息
-#cos_secretId: AKIDUmphNzFYZLsAG878JJ5ctNdeRzJQitoG
-#cos_secretKey: OXRlrlSvEJ9lV1LRHSP8e0oNktRntlNN
+#cos_secretId:
+#cos_secretKey:
 #cos_region: ap-guangzhou
 #cos_bucketName: yhm-1259466197
 #avatar_default_url:
