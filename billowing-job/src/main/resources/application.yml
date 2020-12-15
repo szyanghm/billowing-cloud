@@ -1,0 +1,40 @@
+#server:
+#  port: 8080
+#  servlet:
+#    context-path: /miniapi
+#spring:
+#  cloud:
+#    nacos:
+#      discovery:
+#        server-addr: 127.0.0.1:8848
+#  redis:
+#    password:
+#    lettuce:
+#      pool:
+#        max-active: 5000
+#        max-wait: -1
+#        max-idle: 30
+#        min-idle: 5
+#    timeout: 50000
+#    host: 192.168.40.129
+#    port: 6379
+#
+#wx:
+#  miniapp:
+#    configs:
+#      - appid: wx1975d60a43e68d6b
+#        secret: 40735b8c8af162279a16b2585577a3d9
+#        token: Uel9QcFVjI3DnV3isbE3Pu0kIGKCvQ
+#        aesKey: zLt0JF9WHbZqORxGbWQE35MTzWxT42zu0xkfrB36lv2
+#        msgDataFormat: JSON
+#
+##腾讯云COS 配置信息
+#cos_secretId: AKIDUmphNzFYZLsAG878JJ5ctNdeRzJQitoG
+#cos_secretKey: OXRlrlSvEJ9lV1LRHSP8e0oNktRntlNN
+#cos_region: ap-guangzhou
+#cos_bucketName: yhm-1259466197
+#avatar_default_url:
+#cos_invalid_time: 300000
+#
+#logging:
+#  config: classpath:logback.xml

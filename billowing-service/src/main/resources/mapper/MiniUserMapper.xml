@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.red.dust.billowing.mapper.MiniUserMapper">
+
+    <select id="getByOpenIdUser" resultType="com.red.dust.billowing.vo.UserInfoVO" parameterType="com.red.dust.billowing.dto.ParameterDTO">
+        SELECT
+            id,
+            nick_name,
+            city,
+            gender,
+            avatar_url as avatarUrl,
+            remarks
+        FROM
+            mini_user
+        WHERE
+            id = #{miniId}
+        AND deleted = 'N'
+    </select>
+
+    <select id="findTagList" resultType="String" parameterType="String">
+            SELECT
+                t.tag_name
+            FROM
+                tag as t
+            WHERE
+                t.deleted = 'N' and
+                t.id IN (
+                    SELECT
+                        m.tag_id
+                    FROM
+                        user_tag as m
+                    WHERE
+                        m.deleted='N' and m.mini_id = #{miniId}
+                )
+    </select>
+
+    <select id="findPageComment" resultType="com.red.dust.billowing.vo.CommentVO" >
+        SELECT
+        ct.id,
+        ct.mini_id as miniId,
+        u.nick_name,
+        u.avatar_url,
+        ct.comment,
+        ct.give_up,
+				(IF(cg.state,1,0)) as state,
+        (CASE WHEN TO_DAYS(ct.created_time) = TO_DAYS(NOW()) THEN CONCAT('今天',DATE_FORMAT(ct.created_time,'%H:%i'))
+        WHEN TO_DAYS(NOW()) - TO_DAYS(ct.created_time)=1 THEN CONCAT('昨天',DATE_FORMAT(ct.created_time,'%H:%i'))
+        ELSE DATE_FORMAT(ct.created_time, '%Y-%m-%d') END) as createdTime
+        from comment ct
+        INNER JOIN mini_user as u on ct.mini_id=u.id
+		LEFT JOIN comment_give as cg on cg.comment_id = ct.id and cg.mini_id=#{giveMiniId} and cg.deleted='N'
+        WHERE
+        ct.cover_mini_id in (#{miniId},'9b85ece2442e4d979914b8332fbf6479') and ct.deleted='N'
+        order by ct.created_time desc
+    </select>
+
+    <select id="getByFollowState" parameterType="String" resultType="integer">
+        SELECT state from follow WHERE mini_id=#{miniId} and cover_mini_id=#{coverMiniId} and deleted='N'
+    </select>
+
+    <select id="getByFansNum" parameterType="String" resultType="integer">
+        SELECT fans_num from fans WHERE mini_id=#{miniId} and deleted='N'
+    </select>
+
+    <insert id="saveFollow" parameterType="com.red.dust.billowing.dto.ParameterDTO">
+        INSERT into follow (id,mini_id,cover_mini_id,state,created_time,updated_time,created_by,updated_by,deleted)
+        values(#{id},#{miniId},#{coverMiniId},1,NOW(),NOW(),#{miniId},#{miniId},'N')
+        on DUPLICATE key UPDATE id=#{id},state=#{flay},updated_time=NOW(),updated_by=#{miniId}
+    </insert>
+
+    <insert id="saveFans">
+        INSERT into fans (id,mini_id,fans_num,created_time,updated_time,created_by,updated_by,deleted)
+        values(#{miniId},#{miniId},1,NOW(),NOW(),#{miniId},#{miniId},'N')
+        on DUPLICATE key UPDATE id=#{miniId},fans_num=fans_num+(#{fansNum}),updated_time=NOW(),updated_by=#{miniId}
+    </insert>
+
+    <select id="findUserDetailList" resultType="java.util.Map">
+        SELECT image_url as url from mini_user_detail WHERE deleted='N' and mini_id = #{miniId} order by sort
+    </select>
+
+    <insert id="saveMiniUserDetail" parameterType="com.red.dust.billowing.dto.ParameterDTO">
+      INSERT INTO mini_user_detail VALUES
+      <foreach collection="list" item="item" separator="," index="index">
+          (MD5(uuid()),#{miniId},#{item.url},#{index},NOW(),NOW(),#{miniId},#{miniId},'N')
+      </foreach>
+    </insert>
+
+    <delete id="deleteMiniUserDetail" parameterType="String">
+        DELETE from mini_user_detail WHERE mini_id=#{miniId}
+    </delete>
+</mapper>

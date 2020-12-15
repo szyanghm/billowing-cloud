@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.red.dust.billowing.mapper.UserMapper">
+
+    <select id="getByOpenId" resultType="com.red.dust.billowing.vo.UserInfoVO" parameterType="String">
+        SELECT
+            id,
+            nick_name,
+            city,
+            gender,
+            avatar_url as avatarUrl
+        FROM
+            mini_user
+        WHERE
+            open_id = #{openid}
+        AND deleted = 'N'
+    </select>
+
+</mapper>

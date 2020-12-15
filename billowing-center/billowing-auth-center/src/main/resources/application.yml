@@ -1,0 +1,36 @@
+#server:
+#  port: 8070
+#
+#spring:
+#  cloud:
+#    nacos:
+#      discovery:
+#        server-addr: 127.0.0.1:8848
+#  datasource:
+#    dynamic:
+#      primary: mysql
+#      strict: false
+#      datasource:
+#        mysql:
+#          url: jdbc:mysql://localhost:3306/sc_auth
+#          username: root
+#          password: 123456
+#          driver-class-name: com.mysql.jdbc.Driver
+#        admin:
+#          url: jdbc:mysql://localhost:3306/sc_admin
+#          username: root
+#          password: 123456
+#          driver-class-name: com.mysql.jdbc.Driver
+#  redis:
+#    password:
+#    lettuce:
+#      pool:
+#        max-active: 5000
+#        max-wait: -1
+#        max-idle: 30
+#        min-idle: 5
+#    timeout: 50000
+#    host: 129.168.40.129
+#    port: 6379
+#logging:
+#  config: classpath:logback.xml
